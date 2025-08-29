@@ -1,0 +1,34 @@
+# Python bytecode files
+*.pyc
+*~
+__pycache__/
+
+# Virtual environments (common names)
+myvenv/
+.venv/
+env/
+
+# Django migrations, except __init__.py
+**/migrations/*
+!**/migrations/__init__.py
+
+# Сollected static files (auto-generated)
+staticfiles/
+
+# macOS system files
+.DS_Store
+
+# Log files
+*.log
+
+# Docker related files and folders
+docker-compose.override.yml
+.env
+postgres_data/
+
+# IDE/editor folders
+.vscode/
+.idea/
+
+# Exclude local Postgres database folder
+bd/

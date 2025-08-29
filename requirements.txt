@@ -1,0 +1,5 @@
+# Core
+Django==5.2.5
+
+# Faker - library for generating fake data (names, addresses, texts, etc.)
+faker==37.4.2
