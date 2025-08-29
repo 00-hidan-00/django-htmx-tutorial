@@ -1,4 +1,4 @@
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 
 from .models import Article
 
@@ -9,3 +9,10 @@ class Home(ListView):
     template_name = "home.html"
     queryset = Article.objects.order_by("-created_at")
     context_object_name = "articles"
+
+
+class ArticleDetailView(DetailView):
+    """Detail view for individual articles."""
+
+    model = Article
+    template_name = "article_detail.html"
