@@ -30,5 +30,6 @@ postgres_data/
 .vscode/
 .idea/
 
-# Exclude local Postgres database folder
-bd/
+# Exclude local database folder
+bd/*
+!bd/.gitkeep
