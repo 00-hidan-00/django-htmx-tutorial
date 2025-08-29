@@ -1,12 +1,29 @@
 <nav class="navbar navbar-light">
-    <div class="container">
-        <a rel="prefetch" class="navbar-brand" href="/">conduit</a>
-        <ul class="nav navbar-nav pull-xs-right">
-            <li class="nav-item">
-                <a href="{% url 'home' %}" rel="prefetch" class="nav-link">
-                    Home
-                </a>
-            </li>
-        </ul>
-    </div>
+   <div class="container">
+      <a rel="prefetch" class="navbar-brand" href="/">conduit</a>
+      <ul class="nav navbar-nav pull-xs-right">
+         <li class="nav-item">
+            {% url 'home' as home %}
+            <a
+               href="{{ home }}"
+               rel="prefetch"
+               class="nav-link {% if request.path == home %}active{% endif %}"
+            >
+               Home
+            </a>
+         </li>
+         <li class="nav-item">
+            {% url 'editor_create' as editor_create %}
+            <a
+               href="{{ editor_create }}"
+               rel="prefetch"
+               class="nav-link {% if request.path == editor_create %}active{% endif %}"
+            >
+            <span class="ion-compose">
+              New Post
+            </span>
+            </a>
+         </li>
+      </ul>
+   </div>
 </nav>
