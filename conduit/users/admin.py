@@ -1,5 +1,14 @@
 from django.contrib import admin
+from .models import User, Profile
 
-from .models import Profile
 
-admin.site.register(Profile)
+class ProfileInline(admin.StackedInline):
+    model = Profile
+    can_delete = False
+
+
+class UserAdmin(admin.ModelAdmin):
+    inlines = [ProfileInline]
+
+
+admin.site.register(User, UserAdmin)
