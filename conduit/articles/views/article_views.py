@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -43,7 +44,7 @@ class ArticleCommentView(View):
         return view(request, *args, **kwargs)
 
 
-class EditorCreateView(CreateView):
+class EditorCreateView(LoginRequiredMixin, CreateView):
     """View for creating articles."""
 
     model = Article
@@ -58,7 +59,7 @@ class EditorCreateView(CreateView):
         return super().form_valid(form)
 
 
-class EditorUpdateView(UpdateView):
+class EditorUpdateView(LoginRequiredMixin, UpdateView):
     """View for editing articles."""
 
     model = Article
@@ -69,8 +70,13 @@ class EditorUpdateView(UpdateView):
         slug_uuid = self.kwargs.get("slug_uuid")
         return get_object_or_404(Article, slug_uuid=slug_uuid)
 
+    def post(self, request, *args, **kwargs):
+        if request.user == self.get_object().author.user:
+            return super().post(request, *args, **kwargs)
+        return redirect(self.get_object().get_absolute_url())
 
-class EditorDeleteView(DeleteView):
+
+class EditorDeleteView(LoginRequiredMixin, DeleteView):
     """View for deleting articles."""
 
     template_name = "article/article_detail.html"
@@ -79,3 +85,8 @@ class EditorDeleteView(DeleteView):
     def get_object(self, **kwargs):
         slug_uuid = self.kwargs.get("slug_uuid")
         return get_object_or_404(Article, slug_uuid=slug_uuid)
+
+    def post(self, request, *args, **kwargs):
+        if request.user == self.get_object().author.user:
+            return super().post(request, *args, **kwargs)
+        return redirect(self.get_object().get_absolute_url())

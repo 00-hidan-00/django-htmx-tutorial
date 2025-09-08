@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views.generic import (
     CreateView, DeleteView
@@ -6,7 +7,7 @@ from django.views.generic import (
 from conduit.articles.models import Article, Comment
 
 
-class CommentCreateView(CreateView):
+class CommentCreateView(LoginRequiredMixin, CreateView):
     """View for creating comments."""
 
     model = Comment
@@ -24,7 +25,7 @@ class CommentCreateView(CreateView):
         return reverse("article_detail", kwargs={"slug_uuid": self.object.article.slug_uuid})
 
 
-class CommentDeleteView(DeleteView):
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
     """View for deleting comments."""
 
     model = Comment
@@ -32,3 +33,8 @@ class CommentDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse("article_detail", kwargs={"slug_uuid": self.object.article.slug_uuid})
+
+    def post(self, request, *args, **kwargs):
+        if request.user == self.get_object().author.user:
+            return super().post(request, *args, **kwargs)
+        return redirect(self.get_object().get_absolute_url())
