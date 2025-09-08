@@ -7,7 +7,7 @@
       <div class="banner">
          <div class="container">
             <h1>{{ article.title }}</h1>
-            {% include "article_meta.html" %}
+            {% include "article/article_meta.html" %}
          </div>
       </div>
       <div class="container page">
@@ -17,6 +17,10 @@
                   {{ article.body|linebreaks }}
                </div>
             </div>
+         </div>
+         <hr/>
+         <div class="row">
+            {% include "comment/comment_container.html" %}
          </div>
       </div>
    </div>
