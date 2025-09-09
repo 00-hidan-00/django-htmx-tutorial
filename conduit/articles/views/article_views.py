@@ -20,11 +20,7 @@ class Home(ListView):
         context = super().get_context_data(**kwargs)
         context["global_feed"] = Article.objects.order_by("-created_at")
         if self.request.user.is_authenticated:
-            context["your_articles"] = Article.objects.filter(
-                author__in=self.request.user.profile.follows.all()
-            ).order_by("-created_at")
-        else:
-            context["your_articles"] = None
+            context["your_articles"] = self.request.user.profile.feed_articles()
         return context
 
 

@@ -67,10 +67,7 @@ class ProfileDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             context["my_articles"] = self.object.articles.order_by('-created_at')
-            context["is_following"] = (
-                    self.request.user.profile.is_following(self.object)
-                    and self.request.user.profile != self.object
-            )
+            context["is_following"] = self.request.user.profile.is_following(self.object)
         return context
 
 
@@ -107,3 +104,4 @@ class ProfileFollowView(LoginRequiredMixin, View):
             request.user.profile.follow(profile_to_follow)
 
         return redirect(request.POST.get("next", "profile_detail"), username=username)
+

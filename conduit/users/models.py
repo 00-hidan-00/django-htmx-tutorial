@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.conf import settings
 
+from conduit.articles.models import Article
+
 
 class CustomUserManager(UserManager):
     """custom UserManager with unique identifier is email instead of username"""
@@ -72,4 +74,11 @@ class Profile(models.Model):
 
     def is_following(self, profile):
         """Return True if `profile` is in self.follows, False otherwise"""
+        if self == profile:
+            return False
         return self.follows.filter(pk=profile.pk).exists()
+
+    def feed_articles(self):
+        """Return articles from followed users and self, newest first."""
+        authors = list(self.follows.values_list("user", flat=True)) + [self.user.id]
+        return Article.objects.filter(author__in=authors).order_by("-created_at")

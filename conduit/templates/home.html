@@ -45,9 +45,9 @@
                   </ul>
                </div>
                {% if request.path == home %}
-                  {% include 'article/article_list.html' with articles=your_articles %}
-               {% elif request.path == home_feed %}
                   {% include 'article/article_list.html' with articles=global_feed %}
+               {% elif request.path == home_feed %}
+                  {% include 'article/article_list.html' with articles=your_articles %}
                {% endif %}
             </div>
          </div>
