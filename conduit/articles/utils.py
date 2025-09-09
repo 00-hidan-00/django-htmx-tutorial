@@ -26,5 +26,4 @@ def slug_uuid_generator(instance):
         slug_field=slug_field,
         uuid_field=uuid_field,
     )
-
     return slug_uuid

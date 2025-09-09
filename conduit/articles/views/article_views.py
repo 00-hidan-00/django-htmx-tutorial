@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView, DetailView, ListView, UpdateView, DeleteView, View
@@ -16,6 +16,17 @@ class Home(ListView):
     queryset = Article.objects.order_by("-created_at")
     context_object_name = "articles"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["global_feed"] = Article.objects.order_by("-created_at")
+        if self.request.user.is_authenticated:
+            context["your_articles"] = Article.objects.filter(
+                author__in=self.request.user.profile.follows.all()
+            ).order_by("-created_at")
+        else:
+            context["your_articles"] = None
+        return context
+
 
 class ArticleDetailView(DetailView):
     """Detail view for individual articles."""
@@ -29,6 +40,8 @@ class ArticleDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = CommentCreateView().get_form_class()
+        if self.request.user.is_authenticated:
+            context["is_following"] = self.request.user.profile.is_following(self.object.author)
         return context
 
 

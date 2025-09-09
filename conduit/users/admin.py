@@ -5,6 +5,7 @@ from .models import User, Profile
 class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
+    filter_horizontal = ("follows",)
 
 
 class UserAdmin(admin.ModelAdmin):

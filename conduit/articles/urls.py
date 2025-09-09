@@ -6,6 +6,7 @@ from .views import (
 
 urlpatterns = [
     path("", Home.as_view(), name="home"),
+    path("feed", Home.as_view(), name="home_feed"),
     path("article/<slug:slug_uuid>", ArticleCommentView.as_view(), name="article_detail"),
     path("editor", EditorCreateView.as_view(), name="editor_create"),
     path("editor/<slug:slug_uuid>", EditorUpdateView.as_view(), name="editor_update"),

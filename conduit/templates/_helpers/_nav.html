@@ -12,8 +12,6 @@
                Home
             </a>
          </li>
-
-
          {% if user.is_authenticated %}
             <li class="nav-item">
                {% url 'editor_create' as editor_create %}
@@ -24,6 +22,29 @@
                    {% if request.path == editor_create %}active{% endif %}"
                >
                   <span class="ion-compose"> New Post </span>
+               </a>
+            </li>
+            <li class="nav-item">
+               {% url 'settings' as settings %}
+               <a
+                  href="{{ settings }}"
+                  rel="prefetch"
+                  class="nav-link
+               {% if request.path == settings %}active{% endif %}"
+               >
+                  <span class="ion-gear-a"> Settings </span>
+               </a>
+            </li>
+            <li class="nav-item">
+               {% url 'profile_detail' username=user.username as profile %}
+               <a
+                  href="{{ profile }}"
+                  rel="prefetch"
+                  class="nav-link
+             {% if request.path == profile %}active{% endif %}"
+               >
+                  <img src="{{ user.profile.image }}" class="user-pic" alt="{{ user.username }}">
+                  {{ user.username }}
                </a>
             </li>
             <li class="nav-item">

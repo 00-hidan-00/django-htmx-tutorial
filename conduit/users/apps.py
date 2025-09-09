@@ -6,4 +6,4 @@ class UsersConfig(AppConfig):
     name = 'conduit.users'
 
     def ready(self):
-        import conduit.users.signals
+        import conduit.users.signals  # noqa

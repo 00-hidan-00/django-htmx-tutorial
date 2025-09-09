@@ -56,6 +56,20 @@ class Profile(models.Model):
         default="https://static.productionready.io/images/smiley-cyrus.jpg"
     )
     bio = models.TextField(max_length=1000, blank=True)
+    follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
+
 
     def __str__(self):
         return self.user.username
+
+    def follow(self, profile):
+        """Follow `profile`"""
+        self.follows.add(profile)
+
+    def unfollow(self, profile):
+        """Unfollow `profile`"""
+        self.follows.remove(profile)
+
+    def is_following(self, profile):
+        """Return True if `profile` is in self.follows, False otherwise"""
+        return self.follows.filter(pk=profile.pk).exists()

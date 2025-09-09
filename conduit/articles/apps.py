@@ -6,4 +6,4 @@ class ArticlesConfig(AppConfig):
     name = 'conduit.articles'
 
     def ready(self):
-        import conduit.articles.signals
+        import conduit.articles.signals  # noqa
