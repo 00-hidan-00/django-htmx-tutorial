@@ -22,8 +22,13 @@ class Article(models.Model):
     def get_absolute_url(self):
         return reverse("article_detail", kwargs={"slug_uuid": self.slug_uuid})
 
-    def __str__(self):
-        return self.title
+    @property
+    def favorites_count(self):
+        return self.favorited_by.count()
+
+
+def __str__(self):
+    return self.title
 
 
 class Comment(models.Model):

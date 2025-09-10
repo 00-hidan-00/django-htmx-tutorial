@@ -9,23 +9,24 @@
       </a>
       <span class="date">
       {{ article.created_at|date:"D M d Y" }}
-    </span>
+      </span>
    </div>
    {% if user == article.author.user %}
       <span>
-    <a
-       href="{% url 'editor_update' slug_uuid=article.slug_uuid %}"
-       class="btn btn-outline-secondary btn-sm"
-    >
-      <span class="ion-edit">
-        Edit Article
-      </span>
-      </a>
+         <a
+            href="{% url 'editor_update' slug_uuid=article.slug_uuid %}"
+            class="btn btn-outline-secondary btn-sm"
+         >
+            <span class="ion-edit">
+              Edit Article
+            </span>
+         </a>
       {% include 'article/article_delete.html' %}
-  </span>
+      </span>
    {% else %}
       <span>
-    {% include 'profile/profile_follow.html' with profile=article.author %}
-  </span>
+         {% include 'profile/profile_follow.html' with profile=article.author %}
+         {% include 'article_favorite.html' %}
+        </span>
    {% endif %}
 </div>

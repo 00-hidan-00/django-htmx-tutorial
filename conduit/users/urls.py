@@ -15,6 +15,7 @@ urlpatterns = [
     path("signup", SignUp.as_view(), name="signup"),
     path("profile/@<str:username>", ProfileDetailView.as_view(), name="profile_detail"),
     path("settings/", ProfileUpdateView.as_view(), name="settings"),
-    path("profile/@<str:username>/follow", ProfileFollowView.as_view(), name="profile_follow", ),
+    path("profile/@<str:username>/follow", ProfileFollowView.as_view(), name="profile_follow"),
+    path("profile/@<str:username>/favorites", ProfileDetailView.as_view(), name="profile_favorites"),
 
 ]

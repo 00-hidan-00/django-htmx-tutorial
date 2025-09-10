@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
-    CreateView, DetailView, ListView, UpdateView, DeleteView, View
+    CreateView, DetailView, ListView, UpdateView, DeleteView, View, RedirectView
 )
 
 from conduit.articles.models import Article
@@ -99,3 +99,23 @@ class EditorDeleteView(LoginRequiredMixin, DeleteView):
         if request.user == self.get_object().author.user:
             return super().post(request, *args, **kwargs)
         return redirect(self.get_object().get_absolute_url())
+
+
+class ArticleFavoriteView(RedirectView):
+    pattern_name = "article_detail"  # ???
+
+    def get_redirect_url(self, *args, **kwargs):
+        url = self.request.POST.get("next", None)
+        if url:
+            return url
+        else:
+            return super().get_redirect_url(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        slug_uuid = self.kwargs.get("slug_uuid", None)
+        article = get_object_or_404(Article, slug_uuid=slug_uuid)
+        if request.user.profile.has_favorited(article):
+            request.user.profile.unfavorite(article)
+        else:
+            request.user.profile.favorite(article)
+        return super().post(request, *args, **kwargs)

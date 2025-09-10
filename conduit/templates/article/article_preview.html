@@ -8,8 +8,11 @@
             {{ article.author.user.username }}
          </a>
          <span class="date">
-        {{ article.created_at|date:"D M d Y" }}
-      </span>
+            {{ article.created_at|date:"D M d Y" }}
+         </span>
+      </div>
+      <div class="pull-xs-right">
+         {% include 'article/article_favorite.html' %}
       </div>
    </div>
    <a href="{{ article.get_absolute_url }}" rel="prefetch" class="preview-link">

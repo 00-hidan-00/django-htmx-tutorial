@@ -1,0 +1,27 @@
+<form
+   method="post"
+   action="{% url 'article_favorite' slug_uuid=article.slug_uuid %}"
+   style="display:inline"
+>
+   <input type="hidden" name="next" value="{{ request.path }}">
+   {% csrf_token %}
+   <button class="btn btn-sm action-btn
+                 {% if article in user.profile.favorites.all %}
+                 btn-primary
+                 {% else %}
+                 btn-outline-primary
+                 {% endif %}"
+   >
+    <span class="ion-heart">
+      {% if request.path|truncatechars:7 == 'article' %}
+         {% if article in user.profile.favorites.all %}
+            Unfavorite
+         {% else %}
+            Favorite
+         {% endif %} Article ({{ article.favorites_count|default:0 }})
+      {% else %}
+         {{ article.favorites_count|default:0 }}
+      {% endif %}
+    </span>
+   </button>
+</form>

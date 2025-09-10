@@ -1,6 +1,6 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
-from django.conf import settings
 
 from conduit.articles.models import Article
 
@@ -59,7 +59,7 @@ class Profile(models.Model):
     )
     bio = models.TextField(max_length=1000, blank=True)
     follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
-
+    favorites = models.ManyToManyField("articles.Article", related_name="favorited_by", blank=True)
 
     def __str__(self):
         return self.user.username
@@ -82,3 +82,15 @@ class Profile(models.Model):
         """Return articles from followed users and self, newest first."""
         authors = list(self.follows.values_list("user", flat=True)) + [self.user.id]
         return Article.objects.filter(author__in=authors).order_by("-created_at")
+
+    def favorite(self, article):
+        """Add article to Favorites"""
+        self.favorites.add(article)
+
+    def unfavorite(self, article):
+        """Remove article from Favorites"""
+        self.favorites.remove(article)
+
+    def has_favorited(self, article):
+        """Return True if article is in Favorites, False otherwise"""
+        return self.favorites.filter(pk=article.pk).exists()

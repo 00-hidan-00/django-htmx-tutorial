@@ -68,6 +68,8 @@ class ProfileDetailView(DetailView):
         if self.request.user.is_authenticated:
             context["my_articles"] = self.object.articles.order_by('-created_at')
             context["is_following"] = self.request.user.profile.is_following(self.object)
+            context["favorited_articles"] = self.object.favorites.order_by("-created_at")  # new
+
         return context
 
 
@@ -104,4 +106,3 @@ class ProfileFollowView(LoginRequiredMixin, View):
             request.user.profile.follow(profile_to_follow)
 
         return redirect(request.POST.get("next", "profile_detail"), username=username)
-
